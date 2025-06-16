@@ -13,13 +13,13 @@ app.use("/upload", express.static("public/upload"));
 const port = process.env.PORT || 8080;
 connectDB();
 
-app.get("/",(req,res)=>{
+app.get("/",(req,res)=>{ 
     res.send("I am root");
 })
 
 app.use("/users",userRouter);
 app.use("/packages",packageRouter);
 
-app.listen(port,()=>{
+app.listen(port,()=>{  
     console.log(`App is listening on ${port}`);
 })

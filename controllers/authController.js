@@ -7,7 +7,6 @@ const userLogin = async (req, res) => {
 
   try {
     if (email && password) {
-    
       const existingUser = await authUser.findOne({ email });
 
       if (existingUser) {
@@ -23,7 +22,7 @@ const userLogin = async (req, res) => {
           return res.status(200).json({
             message: "User logged in successfully...",
             success: true,
-            token: token,
+            token,
             user: existingUser,
           });
         } else {
@@ -42,38 +41,35 @@ const userLogin = async (req, res) => {
 };
 
 
-const registerUser = async(req,res)=>{
-    const {email, password} = req.body;
-    try{
-  if(email && password){
-        let existingUser = await authUser.find({email});
-        if(existingUser){
-            res.json({message:"User already exist...", success:false});
-        }
-        else{
-             const hashedPassword = bcrypt.hashSync(password,salt);
-            const user = await authUser.create({
-                email,
-                password : hashedPassword
-            });
-            if(user){
-                    res.json({message: "User created successfully...",success: true});
-                }else{
-                    res.json({message: "User cannot be created",success: false});
-                }
-        }
-           
-    }
-    else{
-        res.json({message:"email and password must not be empty",success:false})
-    }
-    }catch(error){
-        res.json({message:error.message,success:false})
+const registerUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if (email && password) {
+      const existingUser = await authUser.findOne({ email });
+      if (existingUser) {
+        return res.json({ message: "User already exists...", success: false });
+      }
 
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await authUser.create({
+        email,
+        password: hashedPassword
+      });
+
+      if (user) {
+        return res.json({ message: "User created successfully...", success: true });
+      } else {
+        return res.json({ message: "User cannot be created", success: false });
+      }
+    } else {
+      return res.json({ message: "Email and password must not be empty", success: false });
     }
-  
-}
+  } catch (error) {
+    return res.json({ message: error.message, success: false });
+  }
+};
+
 module.exports = {
-    userLogin,
-    registerUser,
-}
+  userLogin,
+  registerUser,
+};
