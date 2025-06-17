@@ -3,16 +3,20 @@ const connectDB = require('./config/db');
 const userRouter = require('./routes/authRouter');
 const packageRouter = require('./routes/packageRouter');
 const cors = require('cors');
-require('dotenv').config();
-
 const app = express();
 
-// ✅ Proper CORS setup
+const allowedOrigins = [
+  "https://www.takeofftravels.co.in",
+  "https://takeofftravels-backend.onrender.com"
+];
+
 app.use(cors({
-  origin: "https://www.takeofftravels.co.in",
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
+require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
