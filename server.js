@@ -7,11 +7,18 @@ const app = express();
 
 const allowedOrigins = [
   "https://www.takeofftravels.co.in",
+  "https://takeofftravels.co.in", 
   "https://takeofftravels-backend.onrender.com"
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
