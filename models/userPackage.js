@@ -10,6 +10,7 @@ const userPackageSchema = new mongoose.Schema(
     tagline: {
       type: String,
       trim: true,
+      default: "",
     },
     description: {
       type: String,
@@ -34,26 +35,45 @@ const userPackageSchema = new mongoose.Schema(
     },
 
     // --- Additional Rich Fields ---
-    highlights: [String], // Key points about the package
-    inclusions: [String], // Included items
-    exclusions: [String], // Excluded items
-    specialNotes: String,  // For compliments or offers
-    itinerary: [
-      {
-        dayNumber: Number,
-        title: String,
-        summary: String,
-      },
-    ],
-    priceOptions: [
-      {
-        type: { type: String }, // e.g. "3-Star", "Luxury 4-Star"
-        pricePerPerson: Number,
-      },
-    ],
+    highlights: {
+      type: [String],
+      default: [], // <-- Add default
+    },
+    inclusions: {
+      type: [String],
+      default: [], // <-- Add default
+    },
+    exclusions: {
+      type: [String],
+      default: [], // <-- Add default
+    },
+    specialNotes: {
+      type: String,
+      default: "", // <-- Add default
+    },
+    itinerary: {
+      type: [
+        {
+          dayNumber: Number,
+          title: String,
+          summary: String,
+        },
+      ],
+      default: [], // <-- Add default
+    },
+    priceOptions: {
+      type: [
+        {
+          type: { type: String },
+          pricePerPerson: Number,
+        },
+      ],
+      default: [], // <-- Add default
+    },
   },
   { timestamps: true }
 );
 
 const modelName = 'Package';
-module.exports = mongoose.models[modelName] || mongoose.model(modelName, userPackageSchema);
+module.exports =
+  mongoose.models[modelName] || mongoose.model(modelName, userPackageSchema);
