@@ -28,6 +28,10 @@ const userPackageSchema = new mongoose.Schema(
       type: String, // Single main image
       required: true,
     },
+    thumbnailPublicId: {
+  type: String,
+  default: ""
+},
     category: {
       type: String,
       enum: ['Domestic', 'International', 'Cruise'],
